@@ -1,4 +1,3 @@
 // User object
-export interface User {
-    
+export interface IUser {
 }
