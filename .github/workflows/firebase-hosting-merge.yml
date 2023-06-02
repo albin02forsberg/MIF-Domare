@@ -18,3 +18,4 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MIFDOMARE }}'
           channelId: live
           projectId: mifdomare
+          folder: mif-domare/build
