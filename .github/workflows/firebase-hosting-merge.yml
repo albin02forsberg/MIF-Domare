@@ -18,3 +18,5 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MIFDOMARE }}'
           channelId: live
           projectId: mifdomare
+        env: 
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
