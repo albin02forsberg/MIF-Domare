@@ -28,7 +28,6 @@ export default function Referees() {
         data.push(doc.data());
       });
       setReferees(data);
-      console.log(referees);
     });
   }, []);
 
