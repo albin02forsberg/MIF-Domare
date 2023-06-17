@@ -43,6 +43,9 @@ export default function Referees() {
         <Column field="phone" header="Telefon"></Column>
         <Column field="email" header="E-post"></Column>
         <Column field="adress" header="adress"></Column>
+        <Column field="personalNumber" header="Personnummer"></Column>
+        <Column field="clearingNumber" header="Clearingnummer"></Column>
+        <Column field="accountNumber" header="Kontonummer"></Column>
       </DataTable>
     </div>
   );
