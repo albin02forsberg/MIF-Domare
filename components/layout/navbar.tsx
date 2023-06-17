@@ -9,7 +9,7 @@ import {Menubar} from 'primereact/menubar'
 import { Button } from "primereact/button";
 
 export function Navbar() {
-  const { user } = useAuthContext();
+  const { user, userRoles } = useAuthContext();
 
   const items = [
     {
@@ -23,11 +23,31 @@ export function Navbar() {
       url: "/schedule",
     }];
 
+    const adminItems = [
+      {
+        label: "Domare",
+        icon: "pi pi-fw pi-user",
+        url: "/referee",
+      },
+    ];
+
+    const admin = userRoles?.includes("admin");
+
+    if(admin){
+      items.push(...adminItems);
+    }
+
     return(
       <Menubar model={items}  end={user ? <Button label="Logga ut" onClick={logout} /> : <Link href={"/login"}><Button label="Logga in" onClick={logout} /></Link>} />
     )
 }
 
-function UserNavSection(){
+function CTASection(){
   const { user } = useAuthContext();
+  return(
+    <>
+    <Link href={"/signup"}><Button label="Skapa konto" /></Link>
+    <Link href={"/login"}><Button label="Logga in" /></Link> 
+    </>
+  )
 }
