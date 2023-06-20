@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
+import { Column, ColumnEditorOptions } from "primereact/column";
 import { Button } from "primereact/button";
+import { InputText } from "primereact/inputtext";
 import {
   DocumentData,
   collection,
@@ -11,21 +12,50 @@ import {
   getDocs,
   getFirestore,
   query,
+  setDoc,
 } from "firebase/firestore";
 import firebase_app from "@/lib/firebase";
 import { useEffect, useState } from "react";
 
 let db = getFirestore(firebase_app);
 
+const textEditor = (options: any) => {
+  return (
+    <InputText
+      type="text"
+      value={options.value}
+      onChange={(e) => options.editorCallback(e.target.value)}
+    />
+  );
+};
+
 export default function Referees() {
   const [referees, setReferees] = useState([] as any);
+
+  const onRowComplete = (e: any) => {
+    const newData = e.newData;
+    const id = e.data.id;
+    const docRef = doc(db, "referees", id);
+    setDoc(docRef, newData);
+
+    const newReferees = referees.map((referee: any) => {
+      if (referee.id === id) {
+        return newData;
+      }
+      return referee;
+    }
+    );
+    setReferees(newReferees);
+  };
 
   useEffect(() => {
     const q = query(collection(db, "referees"));
     getDocs(q).then((querySnapshot) => {
       let data: DocumentData[] = [];
       querySnapshot.forEach((doc) => {
-        data.push(doc.data());
+        const d = doc.data();
+        d.id = doc.id;
+        data.push(d);
       });
       setReferees(data);
     });
@@ -35,17 +65,65 @@ export default function Referees() {
     <div>
       <h1>Domarlista</h1>
 
-      <Link href={"/referee/add"}> <Button label="Lägg till domare" /></Link>
+      <Link href={"/referee/add"}>
+        {" "}
+        <Button label="Lägg till domare" />
+      </Link>
 
-      <DataTable value={referees}>
-        <Column field="firstName" header="Förnamn" sortable></Column>
-        <Column field="lastName" header="Efternamn" sortable></Column>
-        <Column field="phone" header="Telefon"></Column>
-        <Column field="email" header="E-post"></Column>
-        <Column field="adress" header="adress"></Column>
-        <Column field="personalNumber" header="Personnummer"></Column>
-        <Column field="clearingNumber" header="Clearingnummer"></Column>
-        <Column field="accountNumber" header="Kontonummer"></Column>
+      <DataTable
+        value={referees}
+        editMode="row"
+        dataKey="id"
+        tableStyle={{ width: "75%" }}
+        onRowEditComplete={onRowComplete}
+      >
+        <Column
+          field="firstName"
+          header="Förnamn"
+          sortable
+          editor={(options) => textEditor(options)}
+        ></Column>
+        <Column
+          field="lastName"
+          header="Efternamn"
+          sortable
+          editor={(options) => textEditor(options)}
+        ></Column>
+        <Column
+          field="phone"
+          header="Telefon"
+          editor={(options) => textEditor(options)}
+        ></Column>
+        <Column
+          field="email"
+          header="E-post"
+          editor={(options) => textEditor(options)}
+        ></Column>
+        <Column
+          field="adress"
+          header="adress"
+          editor={(options) => textEditor(options)}
+        ></Column>
+        <Column
+          field="personalNumber"
+          header="Personnummer"
+          editor={(options) => textEditor(options)}
+        ></Column>
+        <Column
+          field="clearingNumber"
+          header="Clearingnummer"
+          editor={(options) => textEditor(options)}
+        ></Column>
+        <Column
+          field="accountNumber"
+          header="Kontonummer"
+          editor={(options) => textEditor(options)}
+        ></Column>
+        <Column
+          rowEditor
+          headerStyle={{ width: "10%", minWidth: "8rem" }}
+          bodyStyle={{ textAlign: "center" }}
+        ></Column>
       </DataTable>
     </div>
   );
