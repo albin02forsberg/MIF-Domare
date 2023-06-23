@@ -32,7 +32,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthContextProvider>
           <Navbar />
-          {children}
+          <div className="m-4">
+            {children}
+          </div>
         </AuthContextProvider>
       </body>
     </html>
