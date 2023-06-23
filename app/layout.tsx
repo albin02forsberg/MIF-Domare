@@ -8,6 +8,15 @@ import firebase_app from "@/lib/firebase";
 import { getAuth } from "firebase/auth";
 import AuthenticationPage from "@/components/layout/auth/login";
 import { AuthContextProvider } from "@/components/context/AuthContext";
+import {Button} from 'primereact/button'
+
+
+//theme
+import "primereact/resources/themes/lara-light-indigo/theme.css";     
+    
+//core
+import "primereact/resources/primereact.min.css";                                       
+
 
 const auth = getAuth(firebase_app);
 
@@ -23,7 +32,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthContextProvider>
           <Navbar />
-          {children}
+          <div className="m-4">
+            {children}
+          </div>
         </AuthContextProvider>
       </body>
     </html>
