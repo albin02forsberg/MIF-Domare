@@ -16,6 +16,7 @@ import {
 } from "firebase/firestore";
 import firebase_app from "@/lib/firebase";
 import { useEffect, useState } from "react";
+import { useAuthContext } from "@/components/context/AuthContext";
 
 let db = getFirestore(firebase_app);
 
@@ -31,6 +32,24 @@ const textEditor = (options: any) => {
 
 export default function Referees() {
   const [referees, setReferees] = useState([] as any);
+  const { user, userRoles } = useAuthContext();
+
+  useEffect(() => {
+    const q = query(collection(db, "referees"));
+    getDocs(q).then((querySnapshot) => {
+      let data: DocumentData[] = [];
+      querySnapshot.forEach((doc) => {
+        const d = doc.data();
+        d.id = doc.id;
+        data.push(d);
+      });
+      setReferees(data);
+    });
+  }, []);
+
+  if(!userRoles?.includes("admin")){
+    return <h1>Du har inte behörighet att se denna sida</h1>
+  }
 
   const onRowComplete = (e: any) => {
     const newData = e.newData;
@@ -47,19 +66,6 @@ export default function Referees() {
     );
     setReferees(newReferees);
   };
-
-  useEffect(() => {
-    const q = query(collection(db, "referees"));
-    getDocs(q).then((querySnapshot) => {
-      let data: DocumentData[] = [];
-      querySnapshot.forEach((doc) => {
-        const d = doc.data();
-        d.id = doc.id;
-        data.push(d);
-      });
-      setReferees(data);
-    });
-  }, []);
 
   return (
     <div>
