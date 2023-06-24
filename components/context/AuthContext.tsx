@@ -3,6 +3,8 @@ import { onAuthStateChanged, getAuth, User } from "firebase/auth";
 import firebase_app from "@/lib/firebase";
 import { Props } from "next/script";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { ProgressSpinner } from "primereact/progressspinner";
+import { ProgressBar } from "primereact/progressbar";
 
 interface AuthContextProps {
   user: User | null;
@@ -18,6 +20,13 @@ export const useAuthContext = (): AuthContextProps => useContext(AuthContext);
 
 interface AuthContextProviderProps {
   children: React.ReactNode;
+}
+
+const AuthLoading = () => {
+  return (
+    <ProgressBar mode="indeterminate" style={{ height: '6px' }}></ProgressBar>
+
+  )
 }
 
 export const AuthContextProvider = ({
@@ -49,7 +58,7 @@ export const AuthContextProvider = ({
 
   return (
     <AuthContext.Provider value={{ user, userRoles }}>
-      {loading ? <div> Loading... </div> : children}
+      {loading ? <AuthLoading /> : children}
     </AuthContext.Provider>
   );
 };
