@@ -8,15 +8,17 @@ import firebase_app from "@/lib/firebase";
 import { getAuth } from "firebase/auth";
 import AuthenticationPage from "@/components/layout/auth/login";
 import { AuthContextProvider } from "@/components/context/AuthContext";
-import {Button} from 'primereact/button'
-
+import { Button } from "primereact/button";
 
 //theme
-import "primereact/resources/themes/lara-light-indigo/theme.css";     
-    
-//core
-import "primereact/resources/primereact.min.css";                                       
+import "primereact/resources/themes/lara-light-indigo/theme.css";
 
+//core
+import "primereact/resources/primereact.min.css";
+import {
+  ToastContext,
+  ToastContextProvider,
+} from "@/components/context/ToastContext";
 
 const auth = getAuth(firebase_app);
 
@@ -31,10 +33,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthContextProvider>
-          <Navbar />
-          <div className="m-4">
-            {children}
-          </div>
+          <ToastContextProvider>
+            <Navbar />
+            <div className="m-4">{children}</div>
+          </ToastContextProvider>
         </AuthContextProvider>
       </body>
     </html>
