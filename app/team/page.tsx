@@ -5,9 +5,11 @@ import {
   DocumentData,
   addDoc,
   collection,
+  doc,
   getDocs,
   getFirestore,
   query,
+  setDoc,
 } from "firebase/firestore";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
@@ -19,6 +21,16 @@ import { InputText } from "primereact/inputtext";
 import { useToastContext } from "@/components/context/ToastContext";
 
 let db = getFirestore(firebase_app);
+
+const textEditor = (options: any) => {
+  return (
+    <InputText
+      type="text"
+      value={options.value}
+      onChange={(e) => options.editorCallback(e.target.value)}
+    />
+  );
+};
 
 export default function Teams() {
   const { messages, addMessage } = useToastContext();
@@ -63,11 +75,32 @@ export default function Teams() {
 
     addDoc(collection(db, "teams"), emptyTeam);
     addMessage({
-        severity: "success",
-        summary: "Lag tillagt",
-        detail: `Laget ${emptyTeam.name} har lagts till.`
+      severity: "success",
+      summary: "Lag tillagt",
+      detail: `Laget ${emptyTeam.name} har lagts till.`,
     });
     setTeamDialog(false);
+  };
+
+  const onRowComplete = (e: any) => {
+    const newData = e.newData;
+    const id = e.data.id;
+    const docRef = doc(db, "teams", id);
+    setDoc(docRef, newData);
+
+    const newTeams = teams.map((team: any) => {
+      if (team.id === id) {
+        return newData;
+      }
+      return team;
+    });
+    setTeams(newTeams);
+
+    addMessage({
+      severity: "success",
+      summary: "Lag uppdaterat",
+      detail: `Laget ${newData.name} har uppdaterats.`,
+    });
   };
 
   const leftToolbar = () => {
@@ -95,9 +128,26 @@ export default function Teams() {
         rows={10}
         rowsPerPageOptions={[5, 10, 25]}
         emptyMessage="No teams found."
+        editMode="row"
+        onRowEditComplete={onRowComplete}
       >
-        <Column field="name" header="Name" sortable></Column>
-        <Column field="level" header="Level" sortable></Column>
+        <Column
+          field="name"
+          header="Name"
+          sortable
+          editor={(options) => textEditor(options)}
+        ></Column>
+        <Column
+          field="level"
+          header="Level"
+          sortable
+          editor={(options) => textEditor(options)}
+        ></Column>
+        <Column
+          rowEditor
+          headerStyle={{ width: "10%", minWidth: "8rem" }}
+          bodyStyle={{ textAlign: "center" }}
+        ></Column>
       </DataTable>
 
       <Dialog

@@ -9,12 +9,15 @@ import { getAuth } from "firebase/auth";
 import AuthenticationPage from "@/components/layout/auth/login";
 import { AuthContextProvider } from "@/components/context/AuthContext";
 import { Button } from "primereact/button";
+import { Panel } from "primereact/panel";
 
 //theme
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 
 //core
 import "primereact/resources/primereact.min.css";
+import 'primeicons/primeicons.css';
+
 import {
   ToastContext,
   ToastContextProvider,
@@ -35,7 +38,9 @@ export default function RootLayout({
         <AuthContextProvider>
           <ToastContextProvider>
             <Navbar />
-            <div className="m-4">{children}</div>
+            <Panel>
+              <div className="m-4">{children}</div>
+            </Panel>
           </ToastContextProvider>
         </AuthContextProvider>
       </body>
