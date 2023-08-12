@@ -122,7 +122,7 @@ export default function Teams() {
       <DataTable
         value={teams}
         header="Teams"
-        className="p-datatable-gridlines"
+        className="p-datatable-striped p-datatable-gridlines"
         dataKey="id"
         paginator
         rows={10}
