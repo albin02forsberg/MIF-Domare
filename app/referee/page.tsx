@@ -36,7 +36,7 @@ const textEditor = (options: any) => {
 };
 
 export default function Referees() {
-  const { messages, addMessage } = useToastContext();
+  const { addMessage } = useToastContext();
   const [referees, setReferees] = useState([] as any);
   const { user, userRoles } = useAuthContext();
   const [refDialog, setRefDialog] = useState(false);
