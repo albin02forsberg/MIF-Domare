@@ -33,7 +33,7 @@ const textEditor = (options: any) => {
 };
 
 export default function Teams() {
-  const { messages, addMessage } = useToastContext();
+  const { addMessage } = useToastContext();
   const [teams, setTeams] = useState([] as any);
   const [teamDialog, setTeamDialog] = useState(false);
   const [emptyTeam, setEmptyTeam] = useState({
