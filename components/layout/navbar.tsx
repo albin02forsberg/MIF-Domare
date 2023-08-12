@@ -29,6 +29,11 @@ export function Navbar() {
         icon: "pi pi-fw pi-user",
         url: "/referee",
       },
+      {
+        label: "Lag",
+        icon: "pi pi-fw pi-users",
+        url: "/team",
+      }
     ];
 
     const admin = userRoles?.includes("admin");
