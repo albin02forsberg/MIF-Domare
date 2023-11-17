@@ -10,10 +10,10 @@ import { Panel } from "primereact/panel";
 
 //theme
 //import "primereact/resources/themes/lara-light-indigo/theme.css";
-import "primereact/resources/themes/soho-light/theme.css"
+import "primereact/resources/themes/soho-light/theme.css";
 
 import "primereact/resources/primereact.min.css";
-import 'primeicons/primeicons.css';
+import "primeicons/primeicons.css";
 
 import {
   ToastContext,
@@ -24,7 +24,6 @@ const auth = getAuth(firebase_app);
 
 const inter = Inter({ subsets: ["latin"] });
 
-
 export default function RootLayout({
   children,
 }: {
@@ -34,8 +33,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthContextProvider>
+          <Navbar />
           <ToastContextProvider>
-            <Navbar />
             <Panel>
               <div className="m-4">{children}</div>
             </Panel>
